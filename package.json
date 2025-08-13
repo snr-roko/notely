@@ -1,0 +1,21 @@
+{
+  "name": "notely",
+  "version": "1.0.0",
+  "description": "A simple note taker with the mern stack",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snr-roko/notely.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/snr-roko/notely/issues"
+  },
+  "homepage": "https://github.com/snr-roko/notely#readme"
+}
