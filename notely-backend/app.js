@@ -4,6 +4,9 @@ const app = express()
 const mongoose = require('mongoose')
 const notesRouter = require('./routes/noteRouter')
 const customServerError = require('./controllers/error_handler')
+const cors = require('cors')
+
+app.use(cors())
 
 mongoose.connect(mongoUrl).then(() => {
   console.log('Connected to dateabase successfully')
