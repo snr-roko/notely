@@ -39,4 +39,44 @@ const retrieveNote = async (request, response) => {
   response.json(payload)
 }
 
-module.exports = {getAllNotes, createNote, retrieveNote}
+const updateNote = async (request, response) => {
+  if (!request.body.title && !request.body.body) {
+    const payload = errorResponse("Title or body must be present", [])
+    return response.status(400).json(payload)
+  }
+
+  const {id} = request.params
+  const note = await Note.findById(id)
+  if (!note) {
+    const payload = errorResponse('Note not found', [])
+    return response.status(404).json(payload)
+  }
+
+  if (request.body.title) {
+    note.title = request.body.title
+  }
+
+  if (request.body.body) {
+    note.body = request.body.body
+  }
+
+  const updatedNote = await note.save()
+  const payload = successResponse('Note updated successfully', updatedNote)
+  response.json(payload)
+}
+
+const deleteNote = async (request, response) => {
+  const {id} = request.params
+  const deletedNote = await Note.findByIdAndDelete(id)
+
+  if (!deletedNote) {
+    const payload = errorResponse('Note Not Found', [])
+    return response.status(404).json(payload)
+  }
+  
+  const payload = successResponse("Note Deleted successfully", [])
+  response.status(200).json(payload)
+
+}
+
+module.exports = {getAllNotes, createNote, retrieveNote, updateNote, deleteNote}
