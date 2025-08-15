@@ -5,3 +5,7 @@ export interface NoteProps {
   updatedAt: Date
   createdAt: Date
 }
+
+export interface LoaderProps {
+  text: String
+}
