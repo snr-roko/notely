@@ -10,20 +10,24 @@ const App: React.FC = () => {
   const [notes, setNotes] = useState<NoteProps[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect( () => {
+  const fetchNotes = () => {
     setIsLoading(true)
     noteService.fetchAllNotes().then(notes => {
-      setNotes(notes.data)
+      setNotes(notes)
     }).catch(error => {
       console.log(error.message)
     }).finally(() => {
       setIsLoading(false)
     })
+  }
+
+  useEffect( () => {
+    fetchNotes()
   }, [])
 
   return (
     <div>
-      <Header />
+      <Header onNoteCreated={fetchNotes} />
       <div>
         {isLoading ? <Loading text={"Loading Notes"}/> :
           notes.map((note: NoteProps) => (

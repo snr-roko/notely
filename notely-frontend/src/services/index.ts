@@ -1,19 +1,89 @@
+import type { CreateNote, UpdateNote } from "@/interfaces"
+
 const baseUrl = "http://localhost:8080"
 
 const fetchAllNotes = async () => {
   try {
     const response = await fetch(`${baseUrl}/api/notes`)
-    console.log(response.status)
     if (!response.ok) {
-      const errorData = await response.json()
-      throw new Error(errorData.message)
+      const errorResponse = await response.json()
+      throw new Error(errorResponse.message)
     }
-    const data = await response.json()
-    console.log(data)
-    return data
+    const sucessResponse = await response.json()
+    return sucessResponse.data
   } catch(error) {
       throw(error)
   }
 }
 
-export default {fetchAllNotes}
+const fetchNoteById = async (id: string) => {
+  try {
+    const response = await fetch(`${baseUrl}/api/notes/${id}`)
+    if (!response.ok) {
+      const errorResponse = await response.json()
+      throw new Error(errorResponse.message)
+    }
+    const sucessResponse = await response.json()
+    return sucessResponse.data
+  } catch(error) {
+      throw(error)
+  }
+}
+
+const createNote = async (note: CreateNote) => {
+  try {
+    const response = await fetch(`${baseUrl}/api/notes`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(note)
+    })
+    if (!response.ok) {
+      const errorResponse = await response.json()
+      throw new Error(errorResponse.message)
+    }
+    const sucessResponse = await response.json()
+    return sucessResponse.data
+  } catch(error) {
+      throw(error)
+
+  }
+}
+
+const updateNote = async (id: string, note: UpdateNote) => {
+  try {
+    const response = await fetch(`${baseUrl}/api/notes/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(note)
+    })
+    if (!response.ok) {
+      const errorResponse = await response.json()
+      throw new Error(errorResponse.message)
+    }
+  } catch(error) {
+      throw(error)
+
+  }
+}
+
+const deleteNote = async (id: string) => {
+  try {
+    const response = await fetch(`${baseUrl}/api/notes/${id}`, {
+      method: 'DELETE'
+    })
+    if (!response.ok) {
+      const errorResponse = await response.json()
+      throw new Error(errorResponse.message)
+    }
+  } catch(error) {
+      throw(error)
+  }
+}
+
+
+
+export default {fetchAllNotes, fetchNoteById, createNote, updateNote, deleteNote}
