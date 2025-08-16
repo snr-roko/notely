@@ -31,3 +31,8 @@ export interface EditNoteProps {
   fetchAllNotes: () => void
 }
 
+export interface ErrorProps {
+  showing: boolean
+  message: string | null
+  onClose: () => void
+}

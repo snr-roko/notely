@@ -6,6 +6,7 @@ import { Edit, Trash } from 'lucide-react'
 import {Button} from '@/components/ui/button'
 import Loading from './components/Loading'
 import EditNoteDialog from './components/EditNoteDialog'
+import ErrorNotification from './components/ErrorComponent'
 
 const App: React.FC = () => {
   const [notes, setNotes] = useState<NoteProps[]>([])
@@ -13,7 +14,7 @@ const App: React.FC = () => {
   const [isLoadingDelete, setIsLoadingDelete] = useState(false)
   const [idToDelete, setIdToDelete] = useState('')
   const [isEditModalOpen, setisEditModalOpen] = useState(false)
-
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const fetchNotes = () => {
     setIsLoading(true)
@@ -50,7 +51,7 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       <Header onNoteCreated={fetchNotes} />
-  
+      <ErrorNotification onClose={() => setErrorMessage(null)} showing={errorMessage !== null} message={errorMessage} />
       <div className="px-3 py-4 md:px-6 md:py-8 lg:px-8 lg:py-12">
         {isLoading ? (
           <Loading text={"Loading Notes"} />
