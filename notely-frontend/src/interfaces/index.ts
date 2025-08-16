@@ -22,6 +22,7 @@ export interface UpdateNote {
 
 export interface HeaderProps {
   onNoteCreated: () => void;
+  setErrorMessage: (message: string | null) => void;
 }
 
 export interface EditNoteProps {

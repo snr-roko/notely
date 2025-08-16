@@ -5,7 +5,7 @@ import noteService from '@/services/index'
 import type { NoteProps, HeaderProps } from '@/interfaces'
 import { Loader2Icon } from 'lucide-react'
 
-const Header: React.FC<HeaderProps> = ({ onNoteCreated }) => {
+const Header: React.FC<HeaderProps> = ({ onNoteCreated, setErrorMessage }) => {
 
   const [title, setTitle] = useState<string>('')
   const [body, setBody] = useState<string>('')
@@ -29,7 +29,8 @@ const Header: React.FC<HeaderProps> = ({ onNoteCreated }) => {
       setOpen(false)
       onNoteCreated()
     }).catch(error => {
-      console.log(error.message)
+      setErrorMessage(error.message)
+      setTimeout(() => setErrorMessage(null), 5000)
     }).finally(() => {
       setIsLoading(false)
     })
