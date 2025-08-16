@@ -14,6 +14,12 @@ const createNote = async (request, response) => {
   }
   const {title, body} = request.body
 
+  const existingNote = await Note.findOne({title})
+  if (existingNote) {
+    const payload = errorResponse('Validation Error: Note Title Duplicated', [])
+    return response.status(400).json(payload)
+  }
+
   const note = new Note({
     title: title,
     body: body

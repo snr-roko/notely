@@ -1,8 +1,8 @@
-const {successResponse} = require('../utils/responses')
+const {errorResponse} = require('../utils/responses')
 
 const customServerError = (error, request, response, next) => {
   console.log(error.message)
-  payload = successResponse('Something went wrong', [])
+  payload = errorResponse('Something went wrong', [])
   response.status(500).json(payload)
 }
 
