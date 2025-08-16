@@ -13,6 +13,7 @@ const App: React.FC = () => {
   const fetchNotes = () => {
     setIsLoading(true)
     noteService.fetchAllNotes().then(notes => {
+      console.log(notes)
       setNotes(notes)
     }).catch(error => {
       console.log(error.message)
@@ -27,25 +28,25 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-  <Header onNoteCreated={fetchNotes} />
+      <Header onNoteCreated={fetchNotes} />
   
-  <div className="px-3 py-4 md:px-6 md:py-8 lg:px-8 lg:py-12">
-    {isLoading ? (
-      <Loading text={"Loading Notes"} />
-    ) : notes.length === 0 ? (
-      // Empty state 
-      <div className="flex flex-col items-center justify-center py-16 md:py-24">
-        <div className="w-16 h-16 md:w-20 md:h-20 bg-slate-200 rounded-full flex items-center justify-center mb-4">
-          <svg className="w-8 h-8 md:w-10 md:h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
+      <div className="px-3 py-4 md:px-6 md:py-8 lg:px-8 lg:py-12">
+        {isLoading ? (
+          <Loading text={"Loading Notes"} />
+        ) : notes.length === 0 ? (
+          // Empty state 
+          <div className="flex flex-col items-center justify-center py-16 md:py-24">
+            <div className="w-16 h-16 md:w-20 md:h-20 bg-slate-200 rounded-full flex items-center justify-center mb-4">
+              <svg className="w-8 h-8 md:w-10 md:h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <h3 className="text-lg md:text-xl font-medium text-slate-600 mb-2">No notes yet</h3>
+            <p className="text-sm md:text-base text-slate-500 text-center max-w-sm">
+              Create your first note to get started organizing your thoughts.
+            </p>
         </div>
-        <h3 className="text-lg md:text-xl font-medium text-slate-600 mb-2">No notes yet</h3>
-        <p className="text-sm md:text-base text-slate-500 text-center max-w-sm">
-          Create your first note to get started organizing your thoughts.
-        </p>
-      </div>
-    ) : (
+        ) : (
       // Notes grid 
       <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-4 lg:gap-6">
         {notes.map((note: NoteProps) => (
@@ -76,11 +77,11 @@ const App: React.FC = () => {
                   </p>
                 )}
                 
-                {/* Timestamp or metadata could go here */}
-                <div className="hidden md:block mt-3 lg:mt-4">
+                {/* Timestamp */}
+                <div className=" mt-3 lg:mt-4">
                   <span className="inline-flex items-center px-2 py-1 rounded-full 
                                  bg-emerald-50 text-emerald-700 text-xs font-medium">
-                    {}
+                    {new Date(note.createdAt).toLocaleDateString()} - {new Date(note.createdAt).toLocaleTimeString()}
                   </span>
                 </div>
               </div>
