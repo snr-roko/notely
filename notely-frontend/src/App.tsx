@@ -9,6 +9,9 @@ import Loading from './components/Loading'
 const App: React.FC = () => {
   const [notes, setNotes] = useState<NoteProps[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false)
+  const [idToDelete, setIdToDelete] = useState('')
+
 
   const fetchNotes = () => {
     setIsLoading(true)
@@ -19,6 +22,18 @@ const App: React.FC = () => {
       console.log(error.message)
     }).finally(() => {
       setIsLoading(false)
+    })
+  }
+
+  const handleDeleteNote = (id: string) => {
+    setIdToDelete(id)
+    setIsLoadingDelete(true)
+    noteService.deleteNote(id).then(() => {
+      setIsLoadingDelete(false)
+      setIdToDelete('')
+      fetchNotes()
+    }).catch(error => {
+      console.log(error.message)
     })
   }
 
@@ -83,6 +98,14 @@ const App: React.FC = () => {
                                  bg-emerald-50 text-emerald-700 text-xs font-medium">
                     {new Date(note.createdAt).toLocaleDateString()} - {new Date(note.createdAt).toLocaleTimeString()}
                   </span>
+                  <span className='inline-flex items-center px-2 py-1 rounded-full 
+                                 bg-red-50 text-red-600 text-xs font-medium"'>
+                    {
+                      isLoadingDelete && note.id.toString() === idToDelete ? (
+                        <Loading text={"Deleting Note"} />
+                      ) : (null)
+                    }
+                  </span>
                 </div>
               </div>
               
@@ -104,6 +127,7 @@ const App: React.FC = () => {
                 </Button>
                 
                 <Button 
+                  onClick={() => handleDeleteNote(note.id.toString())}
                   variant="ghost" 
                   size="sm"
                   className="h-8 w-8 md:h-9 md:w-9 p-0
