@@ -1,25 +1,33 @@
 export interface NoteProps {
-  id: String
-  title: String
-  body: String
+  id: string
+  title: string
+  body: string
   updatedAt: Date
   createdAt: Date
 }
 
 export interface LoaderProps {
-  text: String
+  text: string
 }
 
 export interface CreateNote {
-  title: String
-  body: String
+  title: string
+  body: string
 }
 
 export interface UpdateNote {
-  title?: String
-  body?: String
+  title?: string
+  body?: string
 }
 
 export interface HeaderProps {
   onNoteCreated: () => void;
 }
+
+export interface EditNoteProps {
+  note: NoteProps
+  isOpen: boolean
+  setIsOpen: (value: boolean) => void
+  fetchAllNotes: () => void
+}
+

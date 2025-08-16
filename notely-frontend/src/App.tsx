@@ -5,12 +5,14 @@ import type { NoteProps } from './interfaces'
 import { Edit, Trash } from 'lucide-react'
 import {Button} from '@/components/ui/button'
 import Loading from './components/Loading'
+import EditNoteDialog from './components/EditNoteDialog'
 
 const App: React.FC = () => {
   const [notes, setNotes] = useState<NoteProps[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isLoadingDelete, setIsLoadingDelete] = useState(false)
   const [idToDelete, setIdToDelete] = useState('')
+  const [isEditModalOpen, setisEditModalOpen] = useState(false)
 
 
   const fetchNotes = () => {
@@ -35,6 +37,10 @@ const App: React.FC = () => {
     }).catch(error => {
       console.log(error.message)
     })
+  }
+
+  const handleEdit = () => {
+    setisEditModalOpen(true)
   }
 
   useEffect( () => {
@@ -73,6 +79,7 @@ const App: React.FC = () => {
                        transform hover:-translate-y-1 md:hover:-translate-y-2
                        p-4 md:p-5 lg:p-6"
           >
+            <EditNoteDialog note={note} isOpen={isEditModalOpen} setIsOpen={setisEditModalOpen} fetchAllNotes={fetchNotes} />
             {/* Note content area */}
             <div className="flex md:flex-col gap-3 md:gap-4 items-start">
               {/* Title with proper truncation */}
@@ -112,6 +119,7 @@ const App: React.FC = () => {
               {/* Action buttons */}
               <div className="flex md:flex-row gap-2 md:gap-3 md:mt-4 md:pt-4 md:border-t md:border-slate-100">
                 <Button 
+                  onClick={handleEdit}
                   variant="ghost" 
                   size="sm"
                   className="h-8 w-8 md:h-9 md:w-9 p-0
