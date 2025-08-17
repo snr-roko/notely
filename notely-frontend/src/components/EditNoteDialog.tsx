@@ -19,7 +19,7 @@ const EditNoteDialog: React.FC<EditNoteProps> = ({ note, isOpen, setIsOpen, fetc
   const [title, setTitle] = useState<string>('');
   const [body, setBody] = useState<string>('');
   const [isSaving, setIsSaving] = useState(false);
-  const [isSaved, setIsSaved] = useState(false)
+  const [isSaved, setIsSaved] = useState(true)
   const titleEditingTimeout = useRef<NodeJS.Timeout | null>(null)
   const bodyEditingTimeout = useRef<NodeJS.Timeout | null>(null)
 
@@ -37,6 +37,9 @@ const EditNoteDialog: React.FC<EditNoteProps> = ({ note, isOpen, setIsOpen, fetc
   const handleTitleChange = async (event: React.ChangeEvent<HTMLInputElement>, id: string) => {
     const newTitle = event.target.value;
     setTitle(newTitle)
+    setIsSaved(false)
+    setIsSaving(true)
+
 
     if (titleEditingTimeout.current) {
       clearTimeout(titleEditingTimeout.current)
@@ -44,8 +47,7 @@ const EditNoteDialog: React.FC<EditNoteProps> = ({ note, isOpen, setIsOpen, fetc
 
     titleEditingTimeout.current = setTimeout( async () => {
       // Call update service with new title in 5 seconds
-      setIsSaved(false)
-      setIsSaving(true)
+
       await noteService.updateNote(id, { ...note, title: newTitle, body }).then(() => {
         setIsSaving(false)
         setIsSaved(true)
@@ -60,6 +62,8 @@ const EditNoteDialog: React.FC<EditNoteProps> = ({ note, isOpen, setIsOpen, fetc
   const handleBodyChange = async (event: React.ChangeEvent<HTMLTextAreaElement>, id: string) => {
     const newBody = event.target.value;
     setBody(newBody)
+    setIsSaved(false)
+    setIsSaving(true)
     
     if (bodyEditingTimeout.current) {
       clearTimeout(bodyEditingTimeout.current)
@@ -67,8 +71,6 @@ const EditNoteDialog: React.FC<EditNoteProps> = ({ note, isOpen, setIsOpen, fetc
 
     bodyEditingTimeout.current = setTimeout(async () => {
       // Call update service with new body in 5 seconds
-      setIsSaved(false)
-      setIsSaving(true)
       
       await noteService.updateNote(id, { ...note, title, body: newBody }).then(
       () => {
@@ -114,11 +116,10 @@ const EditNoteDialog: React.FC<EditNoteProps> = ({ note, isOpen, setIsOpen, fetc
                        transition-all duration-200 ease-in-out
                        outline-none"
               placeholder="Enter note title..."
-              disabled={isSaving}
             />
           </div>
           
-          {/* Body textarea */}
+          {/* ody textarea */}
           <div className="space-y-2">
             <label htmlFor="body" className="block text-sm md:text-base font-medium text-slate-700">
               Body
@@ -138,7 +139,6 @@ const EditNoteDialog: React.FC<EditNoteProps> = ({ note, isOpen, setIsOpen, fetc
                        outline-none resize-none"
               rows={6}
               placeholder="Write your note here..."
-              disabled={isSaving}
             />
           </div>
         </div>
@@ -146,7 +146,11 @@ const EditNoteDialog: React.FC<EditNoteProps> = ({ note, isOpen, setIsOpen, fetc
         {/* Simple close button */}
         <DialogFooter className='mt-6 flex justify-end'>
           <div className="flex items-center gap-2 text-sm text-slate-600 mr-4">
-            {isSaved ? <p className='bg-emerald-300'>Saved</p> : <Loading text={"Saving..."}/>}
+            {isSaved ? 
+            <div className="inline-flex items-center gap-2 text-xs text-emerald-600">
+              <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+              <span>Saved</span>
+            </div> : <Loading text={"Saving..."}/>}
           </div>
           <DialogClose asChild>
             <Button
