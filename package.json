@@ -4,7 +4,14 @@
   "description": "A simple note taker with the mern stack",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd notely-backend && node app.js", 
+    "client": "cd notely-frontend && npm run dev",
+    "build": "cd notely-frontend && npm install && npm run build",
+    "start": "cd notely-backend && npm install && npm start"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   },
   "repository": {
     "type": "git",
@@ -17,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/snr-roko/notely/issues"
   },
-  "homepage": "https://github.com/snr-roko/notely#readme"
+  "homepage": "https://github.com/snr-roko/notely#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.0"
+  }
 }
