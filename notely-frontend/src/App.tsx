@@ -6,7 +6,7 @@ import { Edit, Trash } from 'lucide-react'
 import {Button} from '@/components/ui/button'
 import Loading from './components/Loading'
 import EditNoteDialog from './components/EditNoteDialog'
-import ErrorNotification from './components/ErrorComponent'
+import Notification from './components/NotificationComponent'
 
 const App: React.FC = () => {
   const [notes, setNotes] = useState<NoteProps[]>([])
@@ -15,14 +15,16 @@ const App: React.FC = () => {
   const [idToDelete, setIdToDelete] = useState('')
   const [isEditModalOpen, setisEditModalOpen] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
+
 
   const fetchNotes = () => {
     setIsLoading(true)
     noteService.fetchAllNotes().then(notes => {
-      console.log(notes)
       setNotes(notes)
     }).catch(error => {
-      console.log(error.message)
+      setErrorMessage(error.message)
+      setTimeout(() => setErrorMessage(null), 5000)
     }).finally(() => {
       setIsLoading(false)
     })
@@ -31,12 +33,17 @@ const App: React.FC = () => {
   const handleDeleteNote = (id: string) => {
     setIdToDelete(id)
     setIsLoadingDelete(true)
-    noteService.deleteNote(id).then(() => {
+    noteService.deleteNote(id).then((response) => {
       setIsLoadingDelete(false)
       setIdToDelete('')
       fetchNotes()
+      setSuccessMessage(response.message)
+      setTimeout(() => setSuccessMessage(null), 5000)
     }).catch(error => {
-      console.log(error.message)
+      setErrorMessage(error.message)
+      setTimeout(() => setErrorMessage(null), 5000)
+    }).finally(() => {
+      setIsLoadingDelete(false)
     })
   }
 
@@ -50,8 +57,9 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      <Header onNoteCreated={fetchNotes} setErrorMessage={setErrorMessage} />
-      <ErrorNotification onClose={() => setErrorMessage(null)} showing={errorMessage !== null} message={errorMessage} />
+      <Header onNoteCreated={fetchNotes} setErrorMessage={setErrorMessage} setSuccessMessage={setSuccessMessage} />
+      <Notification onClose={() => setErrorMessage(null)} showing={errorMessage !== null} message={errorMessage} />
+      <Notification onClose={() => setSuccessMessage(null)} showing={successMessage !== null} message={successMessage} type='success' />
       <div className="px-3 py-4 md:px-6 md:py-8 lg:px-8 lg:py-12">
         {isLoading ? (
           <Loading text={"Loading Notes"} />

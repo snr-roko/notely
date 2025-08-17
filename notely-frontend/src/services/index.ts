@@ -44,7 +44,7 @@ const createNote = async (note: CreateNote) => {
       throw new Error(errorResponse.message)
     }
     const sucessResponse = await response.json()
-    return sucessResponse.data
+    return sucessResponse
   } catch(error) {
       throw(error)
 
@@ -79,6 +79,8 @@ const deleteNote = async (id: string) => {
       const errorResponse = await response.json()
       throw new Error(errorResponse.message)
     }
+
+    return response.json()
   } catch(error) {
       throw(error)
   }

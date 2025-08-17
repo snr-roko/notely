@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { Button } from './ui/button'
 import { Dialog, DialogContent, DialogClose, DialogDescription, DialogTitle, DialogTrigger , DialogHeader, DialogFooter } from '@/components/ui/dialog'
 import noteService from '@/services/index'
-import type { NoteProps, HeaderProps } from '@/interfaces'
+import type { HeaderProps } from '@/interfaces'
 import { Loader2Icon } from 'lucide-react'
 
-const Header: React.FC<HeaderProps> = ({ onNoteCreated, setErrorMessage }) => {
+const Header: React.FC<HeaderProps> = ({ onNoteCreated, setErrorMessage, setSuccessMessage }) => {
 
   const [title, setTitle] = useState<string>('')
   const [body, setBody] = useState<string>('')
@@ -23,11 +23,13 @@ const Header: React.FC<HeaderProps> = ({ onNoteCreated, setErrorMessage }) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setIsLoading(true)
-    noteService.createNote({title, body}).then(() => {
+    noteService.createNote({title, body}).then((response) => {
       setTitle('')
       setBody('')
       setOpen(false)
       onNoteCreated()
+      setSuccessMessage(response.message)
+      setTimeout(() => setSuccessMessage(null), 5000)
     }).catch(error => {
       setErrorMessage(error.message)
       setTimeout(() => setErrorMessage(null), 5000)

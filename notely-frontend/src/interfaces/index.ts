@@ -1,3 +1,7 @@
+import type { ReactComponentElement } from "react"
+import type { LucideIcon } from 'lucide-react';
+
+
 export interface NoteProps {
   id: string
   title: string
@@ -23,6 +27,7 @@ export interface UpdateNote {
 export interface HeaderProps {
   onNoteCreated: () => void;
   setErrorMessage: (message: string | null) => void;
+  setSuccessMessage: (message: string | null) => void;
 }
 
 export interface EditNoteProps {
@@ -32,8 +37,22 @@ export interface EditNoteProps {
   fetchAllNotes: () => void
 }
 
-export interface ErrorProps {
-  showing: boolean
-  message: string | null
-  onClose: () => void
+export type NotificationType = 'error' | 'success';
+
+export interface NotificationTypeConfig {
+  bgColor: string;
+  icon: LucideIcon;
+  shadowColor: string;
+}
+
+export interface NotificationTypeProps {
+  error: NotificationTypeConfig;
+  success: NotificationTypeConfig;
+}
+
+export interface NotificationProps {
+  showing: boolean;
+  message: string | null;
+  type?: NotificationType;
+  onClose?: () => void;
 }
