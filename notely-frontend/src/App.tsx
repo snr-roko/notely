@@ -81,6 +81,7 @@ const App: React.FC = () => {
       <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-4 lg:gap-6">
         {notes.map((note: NoteProps) => (
           <div 
+            onClick={handleEdit}
             key={note.id as React.Key} 
             className="group bg-white rounded-lg md:rounded-xl border border-slate-200/60 
                        hover:border-slate-300/80 hover:shadow-lg hover:shadow-slate-200/50
