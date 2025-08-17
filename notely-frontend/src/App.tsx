@@ -112,7 +112,7 @@ const App: React.FC = () => {
                 <div className=" mt-3 lg:mt-4">
                   <span className="inline-flex items-center px-2 py-1 rounded-full 
                                  bg-emerald-50 text-emerald-700 text-xs font-medium">
-                    {new Date(note.createdAt).toLocaleDateString()} - {new Date(note.createdAt).toLocaleTimeString()}
+                    {new Date(note.updatedAt).toLocaleDateString()} - {new Date(note.updatedAt).toLocaleTimeString()}
                   </span>
                   <span className='inline-flex items-center px-2 py-1 rounded-full 
                                  bg-red-50 text-red-600 text-xs font-medium"'>

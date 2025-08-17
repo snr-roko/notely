@@ -119,7 +119,7 @@ const EditNoteDialog: React.FC<EditNoteProps> = ({ note, isOpen, setIsOpen, fetc
             />
           </div>
           
-          {/* ody textarea */}
+          {/* body textarea */}
           <div className="space-y-2">
             <label htmlFor="body" className="block text-sm md:text-base font-medium text-slate-700">
               Body
@@ -144,26 +144,42 @@ const EditNoteDialog: React.FC<EditNoteProps> = ({ note, isOpen, setIsOpen, fetc
         </div>
         
         {/* Simple close button */}
-        <DialogFooter className='mt-6 flex justify-end'>
-          <div className="flex items-center gap-2 text-sm text-slate-600 mr-4">
-            {isSaved ? 
-            <div className="inline-flex items-center gap-2 text-xs text-emerald-600">
-              <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-              <span>Saved</span>
-            </div> : <Loading text={"Saving..."}/>}
+        <DialogFooter className='mt-6 flex justify-between'>
+          {/* Timestamp */}
+          <div className="mt-3 lg:mt-4 space-y-2">
+            <div className="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-slate-100 text-slate-600 text-xs">
+              <span className="w-1.5 h-1.5 bg-slate-400 rounded-full"></span>
+              <span className="font-medium">Created:</span>
+              <span>{new Date(note.createdAt).toLocaleDateString()} at {new Date(note.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+            </div>
+            <div className="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-blue-50 text-blue-700 text-xs">
+              <span className="w-1.5 h-1.5 bg-blue-400 rounded-full"></span>
+              <span className="font-medium">Last Updated:</span>
+              <span>{new Date(note.updatedAt).toLocaleDateString()} at {new Date(note.updatedAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+            </div>
           </div>
-          <DialogClose asChild>
-            <Button
-              onClick={() => {
-                setIsOpen(false)
-                fetchAllNotes()
-              }}
-              variant={'outline'} 
-              className='px-4 py-2 text-sm border-slate-200 hover:bg-slate-50'
-            >
-              Done
-            </Button>
-          </DialogClose>
+          
+          <div className='justify-end flex items-center gap-2'>
+            <div className="flex items-center gap-2 text-sm text-slate-600 mr-4">
+              {isSaved ? 
+              <div className="inline-flex items-center gap-2 text-xs text-emerald-600">
+                <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                <span>Saved</span>
+              </div> : <Loading text={"Saving..."}/>}
+            </div>
+            <DialogClose asChild>
+              <Button
+                onClick={ () => {
+                  setIsOpen(false)
+                  fetchAllNotes()
+                }}
+                variant={'outline'} 
+                className='px-4 py-2 text-sm border-slate-200 hover:bg-slate-50'
+              >
+                Done
+              </Button>
+            </DialogClose>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
