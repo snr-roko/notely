@@ -1,4 +1,3 @@
-import type { ReactComponentElement } from "react"
 import type { LucideIcon } from 'lucide-react';
 
 
