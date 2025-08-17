@@ -2,7 +2,7 @@ const Note = require('../models/note')
 const {successResponse, errorResponse} = require('../utils/responses')
 
 const getAllNotes = async (request, response) => {
-  const notes = await Note.find({})
+  const notes = await Note.find({}).sort({updatedAt: -1})
   const payload = successResponse('Notes fetched successfully', notes)
   response.json(payload)
 }
