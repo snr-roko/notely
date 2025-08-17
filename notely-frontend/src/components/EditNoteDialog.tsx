@@ -161,7 +161,7 @@ const EditNoteDialog: React.FC<EditNoteProps> = ({ note, isOpen, setIsOpen, fetc
           
           <div className='justify-end flex items-center gap-2'>
             <div className="flex items-center gap-2 text-sm text-slate-600 mr-4">
-              {isSaved ? 
+              {isSaved || !isSaving ? 
               <div className="inline-flex items-center gap-2 text-xs text-emerald-600">
                 <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
                 <span>Saved</span>
