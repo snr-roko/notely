@@ -1,5 +1,6 @@
 const express = require('express')
 const {port, mongoUrl} = require('./utils/config')
+const path = require('path')
 const app = express()
 const mongoose = require('mongoose')
 const notesRouter = require('./routes/noteRouter')
@@ -7,6 +8,8 @@ const customServerError = require('./controllers/error_handler')
 const cors = require('cors')
 
 app.use(cors())
+
+app.use(express.static(path.join(__dirname, '../notely-frontend/dist')));
 
 mongoose.connect(mongoUrl).then(() => {
   console.log('Connected to dateabase successfully')
