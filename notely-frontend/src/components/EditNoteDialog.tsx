@@ -169,7 +169,8 @@ const EditNoteDialog: React.FC<EditNoteProps> = ({ note, isOpen, setIsOpen, fetc
             </div>
             <DialogClose asChild>
               <Button
-                onClick={ () => {
+                onClick={ (event) => {
+                  event.stopPropagation()
                   setIsOpen(false)
                   fetchAllNotes()
                 }}
