@@ -49,7 +49,7 @@ const EditNoteDialog: React.FC<EditNoteProps> = ({ note, isOpen, setIsOpen, fetc
     titleEditingTimeout.current = setTimeout( async () => {
       // Call update service with new title in 5 seconds
 
-      await noteService.updateNote(id, { ...note, title: newTitle, body }).then((updatedNote: any) => {
+      await noteService.updateNote(id, { ...note, title: newTitle, body }).then((updatedNote) => {
         setIsSaving(false)
         setIsSaved(true)
         setUpdatedAt(new Date(updatedNote.updatedAt))
@@ -75,9 +75,10 @@ const EditNoteDialog: React.FC<EditNoteProps> = ({ note, isOpen, setIsOpen, fetc
       // Call update service with new body in 5 seconds
       
       await noteService.updateNote(id, { ...note, title, body: newBody }).then(
-      () => {
+      (updatedNote) => {
         setIsSaving(false)
         setIsSaved(true)
+        setUpdatedAt(new Date(updatedNote.updatedAt))
       }
     ).catch((error) => {
       setErrorMessage(error.message)

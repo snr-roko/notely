@@ -4,7 +4,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
+  DialogTitle
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import type { DeleteDialogProps } from "@/interfaces";
@@ -20,7 +20,11 @@ const DeleteConfirmDialog: React.FC<DeleteDialogProps> = ({ isOpen, setIsOpen, o
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="gap-2">
-          <Button variant="outline" onClick={() => setIsOpen(false)}>
+          <Button variant="outline" onClick={(event) => {
+            event.stopPropagation()
+            setIsOpen(false)}
+          }
+          >
             Cancel
           </Button>
           <Button 

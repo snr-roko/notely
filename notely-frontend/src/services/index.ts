@@ -68,7 +68,6 @@ const updateNote = async (id: string, note: UpdateNote) => {
     return successResponse.data
   } catch(error) {
       throw(error)
-
   }
 }
 
