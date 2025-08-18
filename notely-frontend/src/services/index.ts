@@ -64,6 +64,8 @@ const updateNote = async (id: string, note: UpdateNote) => {
       const errorResponse = await response.json()
       throw new Error(errorResponse.message)
     }
+    const successResponse = await response.json()
+    return successResponse.data
   } catch(error) {
       throw(error)
 
