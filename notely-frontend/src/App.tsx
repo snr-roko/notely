@@ -93,7 +93,7 @@ const App: React.FC = () => {
                        transform hover:-translate-y-1 md:hover:-translate-y-2
                        p-4 md:p-5 lg:p-6"
           >
-            <EditNoteDialog note={note} isOpen={isEditModalOpen} setIsOpen={setisEditModalOpen} fetchAllNotes={fetchNotes} />
+            <EditNoteDialog note={note} isOpen={isEditModalOpen} setIsOpen={setisEditModalOpen} fetchAllNotes={fetchNotes} setErrorMessage={setErrorMessage} />
             <DeleteConfirmDialog isOpen={isDeleteModalOpen} setIsOpen={setIsDeleteModalOpen} onConfirm={handleDeleteNote} note={note} />
             {/* Note content area */}
             <div className="flex md:flex-col gap-3 md:gap-4 items-start">

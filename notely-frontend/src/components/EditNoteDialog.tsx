@@ -11,15 +11,16 @@ import {
 import { Button } from '@/components/ui/button'
 import noteService from '@/services/index'
 import Loading from './Loading'
-import type { EditNoteProps } from '@/interfaces'
+import type { EditNoteProps} from '@/interfaces'
 
 // Simple edit dialog component - gets note data from parent and updates on change
-const EditNoteDialog: React.FC<EditNoteProps> = ({ note, isOpen, setIsOpen, fetchAllNotes }) => {
+const EditNoteDialog: React.FC<EditNoteProps> = ({ note, isOpen, setIsOpen, fetchAllNotes, setErrorMessage }) => {
   // Form state - just title and body
   const [title, setTitle] = useState<string>('');
   const [body, setBody] = useState<string>('');
   const [isSaving, setIsSaving] = useState(false);
   const [isSaved, setIsSaved] = useState(true)
+  const [updatedAt, setUpdatedAt] = useState<Date>(new Date(note.updatedAt)) 
   const titleEditingTimeout = useRef<NodeJS.Timeout | null>(null)
   const bodyEditingTimeout = useRef<NodeJS.Timeout | null>(null)
 
@@ -48,12 +49,13 @@ const EditNoteDialog: React.FC<EditNoteProps> = ({ note, isOpen, setIsOpen, fetc
     titleEditingTimeout.current = setTimeout( async () => {
       // Call update service with new title in 5 seconds
 
-      await noteService.updateNote(id, { ...note, title: newTitle, body }).then(() => {
+      await noteService.updateNote(id, { ...note, title: newTitle, body }).then((updatedNote: any) => {
         setIsSaving(false)
         setIsSaved(true)
+        setUpdatedAt(new Date(updatedNote.updatedAt))
       }
     ).catch((error) => {
-      console.log(error)
+      setErrorMessage(error.message)
     })
     }, 5000)
   };
@@ -78,7 +80,7 @@ const EditNoteDialog: React.FC<EditNoteProps> = ({ note, isOpen, setIsOpen, fetc
         setIsSaved(true)
       }
     ).catch((error) => {
-      console.log(error)
+      setErrorMessage(error.message)
     })
     }, 5000)
   };
@@ -155,7 +157,7 @@ const EditNoteDialog: React.FC<EditNoteProps> = ({ note, isOpen, setIsOpen, fetc
             <div className="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-blue-50 text-blue-700 text-xs">
               <span className="w-1.5 h-1.5 bg-blue-400 rounded-full"></span>
               <span className="font-medium">Last Updated:</span>
-              <span>{new Date(note.updatedAt).toLocaleDateString()} at {new Date(note.updatedAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+              <span>{new Date(updatedAt).toLocaleDateString()} at {new Date(updatedAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
             </div>
           </div>
           

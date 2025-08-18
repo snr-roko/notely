@@ -34,6 +34,7 @@ export interface EditNoteProps {
   isOpen: boolean
   setIsOpen: (value: boolean) => void
   fetchAllNotes: () => void
+  setErrorMessage: (message: string | null) => void
 }
 
 export type NotificationType = 'error' | 'success';
