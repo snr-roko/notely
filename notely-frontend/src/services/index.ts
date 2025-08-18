@@ -2,9 +2,12 @@ import type { CreateNote, UpdateNote } from "@/interfaces"
 
 const baseUrl = "http://localhost:8080"
 
+const controller = new AbortController()
+setTimeout(() => controller.abort(), 20000)
+
 const fetchAllNotes = async () => {
   try {
-    const response = await fetch(`${baseUrl}/api/notes`)
+    const response = await fetch(`${baseUrl}/api/notes`, {signal: controller.signal})
     if (!response.ok) {
       const errorResponse = await response.json()
       throw new Error(errorResponse.message)
