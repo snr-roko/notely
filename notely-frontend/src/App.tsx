@@ -7,15 +7,17 @@ import {Button} from '@/components/ui/button'
 import Loading from './components/Loading'
 import EditNoteDialog from './components/EditNoteDialog'
 import Notification from './components/NotificationComponent'
+import DeleteConfirmDialog from './components/DeleteComponent'
 
 const App: React.FC = () => {
   const [notes, setNotes] = useState<NoteProps[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isLoadingDelete, setIsLoadingDelete] = useState(false)
-  const [idToDelete, setIdToDelete] = useState('')
   const [isEditModalOpen, setisEditModalOpen] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [idToDelete, setIdToDelete] = useState<string>('')
 
 
   const fetchNotes = () => {
@@ -56,11 +58,11 @@ const App: React.FC = () => {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-50 to-slate-100">
       <Header onNoteCreated={fetchNotes} setErrorMessage={setErrorMessage} setSuccessMessage={setSuccessMessage} />
       <Notification onClose={() => setErrorMessage(null)} showing={errorMessage !== null} message={errorMessage} />
       <Notification onClose={() => setSuccessMessage(null)} showing={successMessage !== null} message={successMessage} type='success' />
-      <div className="px-3 py-4 md:px-6 md:py-8 lg:px-8 lg:py-12">
+      <div className="px-3 py-4 md:px-6 md:py-8 lg:px-8 lg:py-12 flex-1">
         {isLoading ? (
           <Loading text={"Loading Notes"} />
         ) : notes.length === 0 ? (
@@ -92,6 +94,7 @@ const App: React.FC = () => {
                        p-4 md:p-5 lg:p-6"
           >
             <EditNoteDialog note={note} isOpen={isEditModalOpen} setIsOpen={setisEditModalOpen} fetchAllNotes={fetchNotes} />
+            <DeleteConfirmDialog isOpen={isDeleteModalOpen} setIsOpen={setIsDeleteModalOpen} onConfirm={handleDeleteNote} note={note} />
             {/* Note content area */}
             <div className="flex md:flex-col gap-3 md:gap-4 items-start">
               {/* Title with proper truncation */}
@@ -147,9 +150,7 @@ const App: React.FC = () => {
                 <Button 
                   onClick={(event) => {
                     event.stopPropagation()
-                    if (window.confirm('Are you sure you want to delete this note?')) {
-                    handleDeleteNote(note.id.toString())
-                    }
+                    setIsDeleteModalOpen(true)
                   }
                   }
                   variant="ghost" 
@@ -172,6 +173,12 @@ const App: React.FC = () => {
       </div>
     )}
   </div>
+  <footer className='bg-emerald-50 px-4 py-4 mt-auto border-t border-emerald-100'>
+    <div className='flex justify-between items-center text-xs'>
+      <span className='font-medium'>Notely</span>
+      <span className='text-emerald-700'>snr-roko 2025</span>
+    </div>
+  </footer>
 </div>
   )
 }

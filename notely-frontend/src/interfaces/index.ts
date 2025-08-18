@@ -55,3 +55,10 @@ export interface NotificationProps {
   type?: NotificationType;
   onClose?: () => void;
 }
+
+export interface DeleteDialogProps {
+  isOpen: boolean;
+  setIsOpen: (value: boolean) => void
+  onConfirm: (id: string) => void
+  note: NoteProps
+}
