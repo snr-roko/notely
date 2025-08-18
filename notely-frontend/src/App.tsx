@@ -117,14 +117,12 @@ const App: React.FC = () => {
                                  bg-emerald-50 text-emerald-700 text-xs font-medium">
                     {new Date(note.updatedAt).toLocaleDateString()} - {new Date(note.updatedAt).toLocaleTimeString()}
                   </span>
-                  <span className='inline-flex items-center px-2 py-1 rounded-full 
+                  {isLoadingDelete && note.id.toString() === idToDelete && (
+                    <span className='inline-flex items-center px-2 py-1 rounded-full 
                                  bg-red-50 text-red-600 text-xs font-medium"'>
-                    {
-                      isLoadingDelete && note.id.toString() === idToDelete ? (
-                        <Loading text={"Deleting Note"} />
-                      ) : (null)
-                    }
-                  </span>
+                      <Loading text={"Deleting Note"} />
+                    </span>
+                  )}
                 </div>
               </div>
               
@@ -147,7 +145,13 @@ const App: React.FC = () => {
                 </Button>
                 
                 <Button 
-                  onClick={() => handleDeleteNote(note.id.toString())}
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    if (window.confirm('Are you sure you want to delete this note?')) {
+                    handleDeleteNote(note.id.toString())
+                    }
+                  }
+                  }
                   variant="ghost" 
                   size="sm"
                   className="h-8 w-8 md:h-9 md:w-9 p-0
