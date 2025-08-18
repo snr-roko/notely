@@ -1,13 +1,10 @@
 import type { CreateNote, UpdateNote } from "@/interfaces"
 
-const baseUrl = "http://localhost:8080"
-
-const controller = new AbortController()
-setTimeout(() => controller.abort(), 20000)
+const baseUrl = "/api/notes"
 
 const fetchAllNotes = async () => {
   try {
-    const response = await fetch(`${baseUrl}/api/notes`, {signal: controller.signal})
+    const response = await fetch(baseUrl)
     if (!response.ok) {
       const errorResponse = await response.json()
       throw new Error(errorResponse.message)
@@ -21,7 +18,7 @@ const fetchAllNotes = async () => {
 
 const fetchNoteById = async (id: string) => {
   try {
-    const response = await fetch(`${baseUrl}/api/notes/${id}`)
+    const response = await fetch(`${baseUrl}/${id}`)
     if (!response.ok) {
       const errorResponse = await response.json()
       throw new Error(errorResponse.message)
@@ -35,7 +32,7 @@ const fetchNoteById = async (id: string) => {
 
 const createNote = async (note: CreateNote) => {
   try {
-    const response = await fetch(`${baseUrl}/api/notes`, {
+    const response = await fetch(baseUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -56,7 +53,7 @@ const createNote = async (note: CreateNote) => {
 
 const updateNote = async (id: string, note: UpdateNote) => {
   try {
-    const response = await fetch(`${baseUrl}/api/notes/${id}`, {
+    const response = await fetch(`${baseUrl}/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -75,7 +72,7 @@ const updateNote = async (id: string, note: UpdateNote) => {
 
 const deleteNote = async (id: string) => {
   try {
-    const response = await fetch(`${baseUrl}/api/notes/${id}`, {
+    const response = await fetch(`${baseUrl}/${id}`, {
       method: 'DELETE'
     })
     if (!response.ok) {
